@@ -6,12 +6,12 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     void Awake() {
         if (instance != null && instance != this) {
-            gameObject.SetActive(false);
+            Destroy(gameObject);
+            return;
         }
-        else {
-            instance = this;
-            DontDestroyOnLoad(gameObject);
-        }
+        instance = this;
+        DontDestroyOnLoad(gameObject);
+        
     }
 
     void Start() {
@@ -19,7 +19,8 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public override void OnConnectedToMaster() {
-        CreateRoom("testroom");
+        Debug.Log("connected to mastert server");
+        // CreateRoom("testroom");
     }
 
     public override void OnCreatedRoom() {

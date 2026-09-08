@@ -97,7 +97,4 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
             curHatTime = (float)stream.ReceiveNext();
         }
     }
-
-
-    // LEFT OFF ON PAGE 49!!!
 }

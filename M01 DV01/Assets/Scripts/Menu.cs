@@ -36,6 +36,7 @@ public class Menu : MonoBehaviourPunCallbacks {
 
     public void OnCreatedRoomButton(TMP_InputField roomNameInput) {
         NetworkManager.instance.CreateRoom(roomNameInput.text);
+        // photonView.RPC("UpdateLobbyUI", RpcTarget.All);
     }
 
     public void onJoinRoomButton(TMP_InputField roomNameInput) {
@@ -48,6 +49,7 @@ public class Menu : MonoBehaviourPunCallbacks {
 
     public override void OnJoinedRoom() {
         SetScreen(_lobbyScreen);
+        UpdateLobbyUI();
     } 
 
     [PunRPC]
@@ -60,7 +62,9 @@ public class Menu : MonoBehaviourPunCallbacks {
 
         _startGameButton.interactable = PhotonNetwork.IsMasterClient;
 
-        photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+        Debug.Log("Printing Players:\n" + _playerListText.text);
+
+        // photonView.RPC("UpdateLobbyUI", RpcTarget.All);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer) {
