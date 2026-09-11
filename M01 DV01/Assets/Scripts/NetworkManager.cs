@@ -1,3 +1,5 @@
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 using Photon.Pun;
 
@@ -6,21 +8,23 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
 
     void Awake() {
         if (instance != null && instance != this) {
-            Destroy(gameObject);
-            return;
+            gameObject.SetActive(false);
+            Debug.Log("deleted instance");
         }
-        instance = this;
-        DontDestroyOnLoad(gameObject);
-        
+        else {
+            instance = this;
+            DontDestroyOnLoad(gameObject);
+        }
     }
 
     void Start() {
-        PhotonNetwork.ConnectUsingSettings();
+        if(!PhotonNetwork.IsConnected) {
+            PhotonNetwork.ConnectUsingSettings();
+        }
     }
 
     public override void OnConnectedToMaster() {
         Debug.Log("connected to mastert server");
-        // CreateRoom("testroom");
     }
 
     public override void OnCreatedRoom() {
@@ -32,6 +36,7 @@ public class NetworkManager : MonoBehaviourPunCallbacks {
     }
 
     public void JoinRoom(string roomName) {
+        Debug.Log("Joining Room " + roomName);
         PhotonNetwork.JoinRoom(roomName);
     }
 

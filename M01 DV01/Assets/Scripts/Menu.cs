@@ -49,7 +49,7 @@ public class Menu : MonoBehaviourPunCallbacks {
 
     public override void OnJoinedRoom() {
         SetScreen(_lobbyScreen);
-        UpdateLobbyUI();
+        photonView.RPC("UpdateLobbyUI", RpcTarget.All);
     } 
 
     [PunRPC]
@@ -64,7 +64,7 @@ public class Menu : MonoBehaviourPunCallbacks {
 
         Debug.Log("Printing Players:\n" + _playerListText.text);
 
-        // photonView.RPC("UpdateLobbyUI", RpcTarget.All);
+        // photonView.RPC("UpdateLobbyUI", RpcTarget.Others);
     }
 
     public override void OnPlayerLeftRoom(Player otherPlayer) {
