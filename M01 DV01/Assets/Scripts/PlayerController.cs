@@ -9,6 +9,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
     [Header("Info")]
     public float moveSpeed = 7.5f;
     public float jumpForce = 5;
+    public float turnSpeed = 500f;
 
     public GameObject hatObject;
     
@@ -18,14 +19,16 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
     [Header("Components")]
     public Rigidbody rigidBody;
     public Player photonPlayer;
+    public GameObject cannon;
+    public Camera camera;
 
     void Update() {
-        if (PhotonNetwork.IsMasterClient) {
-            if (curHatTime >= GameManager.instance.timeToWin && !GameManager.instance.gameEnded) {
-                GameManager.instance.gameEnded = true;
-                GameManager.instance.photonView.RPC("WinGame", RpcTarget.All, id);
-            }
-        }
+        // if (PhotonNetwork.IsMasterClient) {
+        //     if (curHatTime >= GameManager.instance.timeToWin && !GameManager.instance.gameEnded) {
+        //         GameManager.instance.gameEnded = true;
+        //         GameManager.instance.photonView.RPC("WinGame", RpcTarget.All, id);
+        //     }
+        // }
 
         if(photonView.IsMine) {
             Move();
@@ -45,6 +48,19 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
         float z = Input.GetAxis("Vertical") * moveSpeed;
 
         rigidBody.linearVelocity = new Vector3(x, rigidBody.linearVelocity.y, z);
+
+        float mouseX = Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime;
+        float mouseY = Input.GetAxis("Mouse Y") * turnSpeed * Time.deltaTime;
+
+        rigidBody.rotation = new Vector3(0, mouseX, 0);
+
+        // Vector3 cannonAngle = cannon.transform.localEulerAngles;
+        // cannonAngle.x = mouseY;
+        // cannonAngle.y = 0f;
+        // cannonAngle.z = 90f;
+        // cannonAngle.x = Mathf.Clamp(cannonAngle.x, 15f, 110f);
+
+        // cannon.transform.localEulerAngles = cannonAngle;
     }
 
     void TryJump() {
