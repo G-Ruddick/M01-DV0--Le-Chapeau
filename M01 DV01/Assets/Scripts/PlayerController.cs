@@ -9,7 +9,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
     [Header("Info")]
     public float moveSpeed = 7.5f;
     public float jumpForce = 5;
-    public float turnSpeed = 500f;
+    public float turnSpeed = 2000f;
 
     public GameObject hatObject;
     
@@ -44,23 +44,24 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
     }
 
     void Move() {
-        float x = Input.GetAxis("Horizontal") * moveSpeed;
-        float z = Input.GetAxis("Vertical") * moveSpeed;
+        float x = Input.GetAxis("Horizontal");
+        float z = Input.GetAxis("Vertical");
 
-        rigidBody.linearVelocity = new Vector3(x, rigidBody.linearVelocity.y, z);
+        Debug.Log("x = " + x + " z = " + z);
+        rigidBody.linearVelocity = new Vector3(x * moveSpeed, rigidBody.linearVelocity.y, z * moveSpeed);
 
-        float mouseX = Input.GetAxis("Mouse X") * turnSpeed * Time.deltaTime;
-        float mouseY = Input.GetAxis("Mouse Y") * turnSpeed * Time.deltaTime;
+        float mouseX = Input.GetAxis("Mouse X") * turnSpeed;
+        float mouseY = Input.GetAxis("Mouse Y") * 100f;
 
-        rigidBody.rotation = new Vector3(0, mouseX, 0);
+        transform.Rotate(Vector3.up * mouseX * Time.deltaTime);
 
-        // Vector3 cannonAngle = cannon.transform.localEulerAngles;
-        // cannonAngle.x = mouseY;
-        // cannonAngle.y = 0f;
-        // cannonAngle.z = 90f;
-        // cannonAngle.x = Mathf.Clamp(cannonAngle.x, 15f, 110f);
+        Vector3 rotation = cannon.transform.localEulerAngles;
 
-        // cannon.transform.localEulerAngles = cannonAngle;
+        rotation.x -= mouseY * Time.deltaTime;
+        rotation.y = 0f;
+        rotation.z = 90f;
+
+        cannon.transform.localEulerAngles = rotation;
     }
 
     void TryJump() {
@@ -82,7 +83,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
             rigidBody.isKinematic = true;
         }
 
-        if(id == 1) {
+        if (id == 1) {
             GameManager.instance.GiveHat(id, true);
         }
     }

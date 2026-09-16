@@ -919,6 +919,7 @@ MonoBehaviour:
   id: 0
   moveSpeed: 7.5
   jumpForce: 5
+  turnSpeed: 2000
   hatObject: {fileID: 1665083001634579730}
   curHatTime: 0
   rigidBody: {fileID: 1516438553915288467}
