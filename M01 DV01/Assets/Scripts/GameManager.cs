@@ -6,9 +6,6 @@ using System.Linq;
 public class GameManager : MonoBehaviourPunCallbacks {
     [Header("Stats")] 
     public bool gameEnded = false;
-    public float timeToWin;
-    public float invincibleDuration;
-    public float hatPickupTime;
 
     [Header("Players")]
     public string playerPrefabLocation;
@@ -67,17 +64,6 @@ public class GameManager : MonoBehaviourPunCallbacks {
         playerWithHat = playerId;
 
         GetPlayer(playerId).SetHat(true);
-
-        hatPickupTime = Time.time;
-    }
-
-    public bool CanGetHat () {
-        if (Time.time > hatPickupTime + invincibleDuration) {
-            return true;
-        }
-        else {
-            return false;
-        }
     }
 
     [PunRPC]

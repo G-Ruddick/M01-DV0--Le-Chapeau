@@ -28,7 +28,6 @@ public class GameUI : MonoBehaviour {
             if (i < PhotonNetwork.PlayerList.Length) {
                 container.obj.SetActive(true);
                 container.nameText.text = PhotonNetwork.PlayerList[i].NickName;
-                container.hatTimeSlider.maxValue = GameManager.instance.timeToWin;
             }
 
             else {
@@ -38,9 +37,10 @@ public class GameUI : MonoBehaviour {
     }
 
     void UpdatePlayerUI() {
-        for (int x = 0; x < GameManager.instance.players.Length; ++x) {
+        for (int x = 0; x < GameManager.instance.players.Length; x++) {
             if (GameManager.instance.players[x] != null) {
-                playerContainers[x].hatTimeSlider.value = GameManager.instance.players[x].curHatTime;
+                PlayerController player = GameManager.instance.players[x];
+                playerContainers[x].hatTimeSlider.value = player.playerHealth;
             }
         }   
     }
