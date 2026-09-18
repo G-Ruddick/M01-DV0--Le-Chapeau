@@ -37,12 +37,18 @@ public class GameUI : MonoBehaviour {
     }
 
     void UpdatePlayerUI() {
-        for (int x = 0; x < GameManager.instance.players.Length; x++) {
-            if (GameManager.instance.players[x] != null) {
-                PlayerController player = GameManager.instance.players[x];
-                playerContainers[x].hatTimeSlider.value = player.playerHealth;
+        foreach (PlayerController player in GameManager.instance.players) {
+            if (player == null) {
+                continue;
             }
-        }   
+
+            int playerIndex = player.id - 1;
+            if (playerIndex < 0 || playerIndex >= playerContainers.Length) {
+                continue;
+            }
+
+            playerContainers[playerIndex].hatTimeSlider.value = player.playerHealth;
+        }  
     }
 
     public void SetWinText(string winnerName) {

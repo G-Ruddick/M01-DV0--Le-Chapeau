@@ -16,7 +16,7 @@ public class Bullet : MonoBehaviourPun {
         if (other.gameObject.CompareTag("Player")) {
             PlayerController target = other.gameObject.GetComponent<PlayerController>();
 
-            target.photonView.RPC("TakeDamage", RpcTarget.All, damage);
+            target.photonView.RPC("TakeDamage", target.photonView.Owner, damage);
         }
         
         PhotonNetwork.Destroy(gameObject);

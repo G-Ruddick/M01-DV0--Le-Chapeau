@@ -43,6 +43,7 @@ MonoBehaviour:
   - GiveHat
   - WinGame
   - TakeDamage
+  - SyncHealth
   DisableAutoOpenWizard: 1
   ShowSettings: 0
   DevRegionSetOnce: 0

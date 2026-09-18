@@ -118,9 +118,9 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
             rigidBody.isKinematic = true;
         }
 
-        if (id == 1) {
-            GameManager.instance.GiveHat(id, true);
-        }
+        // if (id == 1) {
+        //     GameManager.instance.GiveHat(id, true);
+        // }
     }
 
     public void SetHat (bool hasHat) {
@@ -140,6 +140,14 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
         }
         
         playerHealth -= damage;
+        photonView.RPC("SyncHealth", RpcTarget.Others, playerHealth);
+    }
+
+    [PunRPC]
+    public void SyncHealth(int health) {
+        if (!photonView.IsMine) {
+            playerHealth = health;
+        }
     }
 
     public void OnPhotonSerializeView (PhotonStream stream, PhotonMessageInfo info) {
@@ -149,7 +157,7 @@ public class PlayerController : MonoBehaviourPunCallbacks, IPunObservable {
             stream.SendNext(cannon.transform.localRotation);
         }
 
-        else if (stream.IsReading) {
+        else /* if (stream.IsReading) */ {
             playerHealth = (int)stream.ReceiveNext();
             networkBodyRotation = (Quaternion)stream.ReceiveNext();
             networkCannonRotation = (Quaternion)stream.ReceiveNext();
